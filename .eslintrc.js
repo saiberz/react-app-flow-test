@@ -25,6 +25,6 @@ module.exports = {
     "react"
   ],
   "rules": {
-    "no-console": "error"
+    "no-console": "warn"
   }
 }
