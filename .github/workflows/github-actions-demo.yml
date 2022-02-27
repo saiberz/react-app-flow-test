@@ -1,0 +1,13 @@
+name: Github Actions Demo
+on: [push]
+jobs:
+  Hello-World:
+    runs-on: ubuntu-latest
+    name: Danger
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Danger 
+        run: npx -y danger ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
