@@ -54,7 +54,6 @@ const createReport = (results) => {
 
     const mof = danger.git.modified_files
     const jsMof = mm(danger.git.modified_files, ['**/*.js'])
-    console.log(jsMof)
     lint(jsMof)
 
 })()
