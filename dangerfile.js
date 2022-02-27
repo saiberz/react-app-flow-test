@@ -24,12 +24,9 @@ const lint = async (files) => {
 const createReport = (results) => {
     const {owner, repo} = danger.github.thisPR;
     // const {ref: branch} = danger.github.head;
-    const branch = "test-pr"
-    const toGHLink = toLink({ owner, repo, branch })
-    // console.log(danger.git)
-    console.log({branch: danger.github?.pr?.head?.ref})
+    const branch = danger.github?.pr?.head?.ref;
+    const toGHLink = toLink({ owner, repo, branch });
 
-    if (results.length < 1) return;
     let report =
         `
 | File | Status | Message |
@@ -38,8 +35,8 @@ const createReport = (results) => {
     results.forEach(({ filePath: aPath, messages }) => {
         const filePath = relativePath(aPath)
         messages.map(({ message, severity, line }) => {
-            console.log(`${severity}:${message}`, filePath, line)
-            markdown(`${severity}:${message}`, filePath, line);
+            console.log(`${message}`, filePath, line)
+            markdown(`${message}`, filePath, line);
             report = `${report}
 | [${filePath}:${line}](${toGHLink({ filePath, line })}) | ${statusToMessage(severity)} | ${message} |`
         }
