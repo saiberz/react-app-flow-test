@@ -1,5 +1,5 @@
 import {message, danger} from "danger"
-import { ESLint } from "eslint"
+const { ESLint } = require("eslint");
 
 (async function main() {
 
