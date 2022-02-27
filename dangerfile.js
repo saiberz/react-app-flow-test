@@ -25,6 +25,7 @@ const createReport = (results) => {
     const {owner, repo} = danger.github.thisPR;
     const {head: branch} = danger.git;
     const toGHLink = toLink({ owner, repo, branch })
+    console.log(danger.git)
 
     if (results.length < 1) return;
     let report =
@@ -35,7 +36,7 @@ const createReport = (results) => {
     results.forEach(({ filePath: aPath, messages }) => {
         const filePath = relativePath(aPath)
         messages.map(({ message, severity, line }) => {
-            markdown(`${statusToMessage(severity)}:${message}`, filePath, line);
+            markdown(`${severity}:${message}`, filePath, line);
             report = `${report}
 | [${filePath}:${line}](${toGHLink({ filePath, line })}) | ${statusToMessage(severity)} | ${message} |`
         }
