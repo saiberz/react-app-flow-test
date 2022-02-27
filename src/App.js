@@ -1,7 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 
+const b = 12;
 function App() {
+    const a = 2;
     console.log("error")
   return (
     <div className="App">

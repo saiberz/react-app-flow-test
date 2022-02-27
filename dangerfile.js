@@ -1,57 +1,52 @@
-const {message, danger} = require('danger')
+const {danger, markdown} = require('danger')
+
 const { ESLint } = require('eslint');
-const github = require('@actions/github')
-const core = require('@actions/core')
 const {relative} = require('path')
 
-const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
+
 const relativePath = (aPath) => relative(__dirname, aPath)
+const toLink = ({ owner, repo, branch }) => ({ filePath, line }) => `https://github.com/${owner}/${repo}/blob/${branch}/${filePath}#L${line}`
+const statusToMessage = (status) => {
+    switch (status) {
+    case 1: return '*⚠️ Warning*'
+    case 2: return '*❗Error*'
+    }
+}
+
 
 const lint = async (files) => {
     const eslint = new ESLint()
     const results = await eslint.lintFiles(files)
-    const formatter = await eslint.loadFormatter("stylish")
-    const resultText = formatter.format(results)
-    results.map(({filePath, messages}) =>
-        [messages[0]]
-        .map(({message, line}) =>
-            addCommentToFile(relativePath(filePath), line, message)
-        )
-    )
-    // message(resultText)
-    return results
+    createReport(results)
 }
 
-const addCommentToFile = async (path, line, body) => {
-    const commit_id = danger.git.head
-    const {number: pull_number, repo, owner} = danger.github.thisPR
-    console.log({
-        owner,
-        repo,
-        pull_number,
-        path,
-        line: line || 1,
-        body,
-        commit_id,
+
+const createReport = (results) => {
+    const {owner, head: branch, repo} = danger.github.thisPR;
+    const toGHLink = toLink({ owner, repo, branch })
+
+    if (results.length < 1) return;
+    let report =
+        `
+| File | Status | Message |
+| --- | --- | --- |`;
+
+    results.forEach(({ filePath: aPath, messages }) => {
+        const filePath = relativePath(aPath)
+        messages.map(({ message, severity, line }) => report = `${report}
+| [${filePath}:${line}](${toGHLink({ filePath, line })}) | ${statusToMessage(severity)} | ${message} |`)
     })
-    await octokit.rest.pulls.createReviewComment({
-        owner,
-        repo,
-        pull_number,
-        path,
-        line: line || 1,
-        body,
-        commit_id,
-    })
+
+    console.log(report);
+
 }
 
 
 (async function main() {
 
 
-    const commitId = danger.git.head
     const mof = danger.git.modified_files
-    // const mof = ['src/App.js']
+    markdown("something", "src/App.js", 4)
 
     lint(mof)
 
