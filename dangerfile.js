@@ -7,7 +7,7 @@ const lint = async (files) => {
     const results = await eslint.lintFiles(files);
     const formatter = await eslint.loadFormatter("stylish");
     const resultText = formatter.format(results);
-    message({resultText});
+    message(resultText);
     return results;
 }
 
