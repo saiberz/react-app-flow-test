@@ -4,7 +4,7 @@ jobs:
   List-Modified-Files:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - name: Danger
         uses: danger/danger-js@11.0.2
         env:
