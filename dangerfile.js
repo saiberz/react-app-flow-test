@@ -1,4 +1,4 @@
-import {message, danger} from "danger"
+const {danger, fail, message, warn} = require('danger');
 
 const modifiedMD = danger.git.modified_files
 console.log({modifiedMD})
