@@ -6,7 +6,7 @@ jobs:
     name: A job to say hello
     steps:
       - uses: actions/checkout@v2
-      - name: Hello world step
-        uses: .github/actions/lint
+      - name: Use my local action
+        uses: ./.github/actions/lint
         with:
           who-to-greet: 'Mona the Octocat'
