@@ -20,6 +20,7 @@ const lint = async (files) => {
 }
 
 const addCommentToFile = async (path, line, body) => {
+    const commit_id = danger.git.head
     const {number: pull_number, repo, owner} = danger.github.thisPR;
     octokit.rest.pulls.createReviewComment({
         owner,
@@ -28,6 +29,7 @@ const addCommentToFile = async (path, line, body) => {
         path,
         line,
         body,
+        commit_id,
     });
 }
 
