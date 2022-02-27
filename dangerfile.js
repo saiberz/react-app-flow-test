@@ -13,7 +13,7 @@ const lint = async (files) => {
     const formatter = await eslint.loadFormatter("stylish")
     const resultText = formatter.format(results)
     results.map(({filePath, messages}) =>
-        messages
+        [messages[0]]
         .map(({message, line}) =>
             addCommentToFile(relativePath(filePath), line, message)
         )
@@ -50,9 +50,8 @@ const addCommentToFile = async (path, line, body) => {
 
 
     const commitId = danger.git.head
-    const mof = danger.git.modified_files
-
-    console.log({mof})
+    // const mof = danger.git.modified_files
+    const mof = ['src/App.js']
 
     lint(mof)
 
