@@ -7,7 +7,5 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Use my local action
-        uses: ./.github/actions/lint
-        with:
-          who-to-greet: 'Mona the Octocat'
+      - name: Danger 
+        run: npx -y danger ci
