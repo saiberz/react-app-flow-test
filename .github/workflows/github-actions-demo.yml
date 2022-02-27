@@ -1,5 +1,5 @@
 name: Github Actions Demo
-on: [push]
+on: pull_request
 jobs:
   Hello-World:
     runs-on: ubuntu-latest
@@ -8,6 +8,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Danger 
+        if: ${{ github.event_name == 'pull_request' }}
         run: npx -y danger ci --verbose
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
