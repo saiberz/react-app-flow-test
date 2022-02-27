@@ -1,4 +1,4 @@
-const {danger, markdown} = require('danger')
+const {danger, markdown, message} = require('danger')
 
 const { ESLint } = require('eslint');
 const {relative} = require('path')
@@ -8,7 +8,7 @@ const relativePath = (aPath) => relative(__dirname, aPath)
 const toLink = ({ owner, repo, branch }) => ({ filePath, line }) => `https://github.com/${owner}/${repo}/blob/${branch}/${filePath}#L${line}`
 const statusToMessage = (status) => {
     switch (status) {
-    case 1: return '*⚠️ Warning*'
+    case 1: return '*Warning*'
     case 2: return '*❗Error*'
     }
 }
@@ -22,7 +22,8 @@ const lint = async (files) => {
 
 
 const createReport = (results) => {
-    const {owner, head: branch, repo} = danger.github.thisPR;
+    const {owner, repo} = danger.github.thisPR;
+    const {header: branch} = danger.git;
     const toGHLink = toLink({ owner, repo, branch })
 
     if (results.length < 1) return;
@@ -41,18 +42,14 @@ const createReport = (results) => {
                     )
     })
 
-    console.log(report);
+    message(report);
 
 }
 
 
 (async function main() {
 
-
     const mof = danger.git.modified_files
-    markdown("something", "src/App.js", 4)
-    markdown("something else", "src/App.js", 6)
-
     lint(mof)
 
 })()
