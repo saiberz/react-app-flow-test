@@ -14,7 +14,7 @@ const lint = async (files) => {
     const resultText = formatter.format(results)
     results.map(({filePath, messages}) =>
         messages.map(({message, line}) =>
-            addCommentToFile(filePath, line, message)
+            addCommentToFile(relativePath(filePath), line, message)
         )
     )
     message(resultText)
