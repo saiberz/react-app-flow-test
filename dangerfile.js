@@ -16,8 +16,7 @@ const lint = async (files) => {
 
 (async function main() {
 
-    const token = core.getInput('GITHUB_TOKEN');
-    const octokit = github.getOctokit(token)
+    const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
 
     console.log({git: danger.git})
     console.log({github: danger.github})
