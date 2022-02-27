@@ -11,6 +11,6 @@ jobs:
         run: npm ci eslint @actions/core @actions/github
       - name: Danger 
         if: ${{ github.event_name == 'pull_request' }}
-        run: npx -y danger ci --verbose
+        run: npx -y danger ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
