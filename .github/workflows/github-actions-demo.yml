@@ -8,7 +8,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Install packages
-        run: npm ci eslint @actions/core @actions/github
+        run: npm ci eslint '@actions/core' '@actions/github'
       - name: Danger 
         if: ${{ github.event_name == 'pull_request' }}
         run: npx -y danger ci
