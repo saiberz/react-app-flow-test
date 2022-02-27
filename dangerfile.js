@@ -2,6 +2,7 @@ const {danger, markdown, message} = require('danger')
 
 const { ESLint } = require('eslint');
 const {relative} = require('path')
+const mm = require('micromatch');
 
 
 const relativePath = (aPath) => relative(__dirname, aPath)
@@ -17,6 +18,7 @@ const statusToMessage = (status) => {
 const lint = async (files) => {
     const eslint = new ESLint()
     const results = await eslint.lintFiles(files)
+
     createReport(results)
 }
 
@@ -51,6 +53,8 @@ const createReport = (results) => {
 (async function main() {
 
     const mof = danger.git.modified_files
-    lint(mof)
+    const jsMof = mm(danger.git.modified_files, ['**/*.js'])
+    console.log(jsMof)
+    lint(jsMof)
 
 })()

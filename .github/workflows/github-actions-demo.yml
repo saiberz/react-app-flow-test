@@ -8,7 +8,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Install packages
-        run: npm install eslint @actions/core @actions/github --no-save
+        run: npm install eslint @actions/core @actions/github micromatch
       - name: Danger
         if: ${{ github.event_name == 'pull_request' }}
         run: npx -y danger ci
