@@ -47,6 +47,7 @@ const createReport = (results) => {
 
     const mof = danger.git.modified_files
     markdown("something", "src/App.js", 4)
+    markdown("something else", "src/App.js", 6)
 
     lint(mof)
 
