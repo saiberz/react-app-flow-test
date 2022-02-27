@@ -25,9 +25,9 @@ const createReport = (results) => {
     const {owner, repo} = danger.github.thisPR;
     const {head: branch} = danger.git;
     const toGHLink = toLink({ owner, repo, branch })
-    console.log(danger.git)
-    console.log(danger.git.pr)
-    console.log(danger.git.thisPR)
+    // console.log(danger.git)
+    console.log(danger.github.pr)
+    console.log(danger.github.thisPR)
 
     if (results.length < 1) return;
     let report =
