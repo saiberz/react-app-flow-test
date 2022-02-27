@@ -23,7 +23,7 @@ const lint = async (files) => {
 
 const createReport = (results) => {
     const {owner, repo} = danger.github.thisPR;
-    const {header: branch} = danger.git;
+    const {head: branch} = danger.git;
     const toGHLink = toLink({ owner, repo, branch })
 
     if (results.length < 1) return;
