@@ -13,7 +13,9 @@ const lint = async (files) => {
     const formatter = await eslint.loadFormatter("stylish")
     const resultText = formatter.format(results)
     results.map(({filePath, messages}) =>
-        messages.map(({message, line}) =>
+        messages
+            .filter(({line} => line))
+        .map(({message, line}) =>
             addCommentToFile(relativePath(filePath), line, message)
         )
     )
@@ -24,8 +26,16 @@ const lint = async (files) => {
 const addCommentToFile = async (path, line, body) => {
     const commit_id = danger.git.head
     const {number: pull_number, repo, owner} = danger.github.thisPR
-    console.log({line})
-    octokit.rest.pulls.createReviewComment({
+    console.log({
+        owner,
+        repo,
+        pull_number,
+        path,
+        line: line || 1,
+        body,
+        commit_id,
+    })
+    await octokit.rest.pulls.createReviewComment({
         owner,
         repo,
         pull_number,
