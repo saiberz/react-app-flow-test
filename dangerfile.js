@@ -3,24 +3,39 @@ const { ESLint } = require("eslint");
 const github = require('@actions/github');
 const core = require('@actions/core');
 
+const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
 
 const lint = async (files) => {
-    const eslint = new ESLint();
-    const results = await eslint.lintFiles(files);
-    const formatter = await eslint.loadFormatter("stylish");
-    const resultText = formatter.format(results);
-    message(resultText);
-    return results;
+    const eslint = new ESLint()
+    const results = await eslint.lintFiles(files)
+    const formatter = await eslint.loadFormatter("stylish")
+    const resultText = formatter.format(results)
+    results.map(({filePath, messages}) =>
+        messages.map(({message, line}) =>
+            addCommentToFile(filePath, line, message)
+        )
+    )
+    message(resultText)
+    return results
+}
+
+const addCommentToFile = async (path, line, body) => {
+    const {number: pull_number, repo, owner} = danger.github.thisPR;
+    octokit.rest.pulls.createReviewComment({
+        owner,
+        repo,
+        pull_number,
+        path,
+        line,
+        body,
+    });
 }
 
 
 (async function main() {
 
-    const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
 
-    console.log({git: danger.git})
-    console.log({github: danger.github})
-
+    const commitId = danger.git.head
     const mof = danger.git.modified_files
 
     console.log({mof})
