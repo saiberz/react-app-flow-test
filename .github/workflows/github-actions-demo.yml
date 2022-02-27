@@ -3,7 +3,7 @@ on: [push]
 jobs:
   Hello-World:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Danger
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
