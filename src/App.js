@@ -4,7 +4,7 @@ import './App.css';
 const b = 12;
 function App() {
     const a = !!!Math.random() > 2;
-    console.log("error")
+  console.log("error")
   return (
     <div className="App">
       <header className="App-header">
