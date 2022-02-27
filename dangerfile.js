@@ -33,8 +33,12 @@ const createReport = (results) => {
 
     results.forEach(({ filePath: aPath, messages }) => {
         const filePath = relativePath(aPath)
-        messages.map(({ message, severity, line }) => report = `${report}
-| [${filePath}:${line}](${toGHLink({ filePath, line })}) | ${statusToMessage(severity)} | ${message} |`)
+        messages.map(({ message, severity, line }) => {
+            markdown(`${statusToMessage(severity)}:${message}`, filePath, line);
+            report = `${report}
+| [${filePath}:${line}](${toGHLink({ filePath, line })}) | ${statusToMessage(severity)} | ${message} |`
+        }
+                    )
     })
 
     console.log(report);
