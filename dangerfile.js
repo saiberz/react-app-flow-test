@@ -1,9 +1,11 @@
-const {message, danger} = require("danger")
-const { ESLint } = require("eslint");
-const github = require('@actions/github');
-const core = require('@actions/core');
+const {message, danger} = require('danger')
+const { ESLint } = require('eslint');
+const github = require('@actions/github')
+const core = require('@actions/core')
+const {relative} = require('path')
 
 const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
+const relativePath = (aPath) => relative(__dirname, aPath)
 
 const lint = async (files) => {
     const eslint = new ESLint()
